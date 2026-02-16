@@ -1,13 +1,13 @@
-using FinanceTrackerApp.Views;
 using Syncfusion.Maui.Toolkit.Carousel;
+using FinanceTrackerApp.ViewModels;
 
 namespace FinanceTrackerApp.Views;
 
 public partial class TransactionsPage : ContentPage
 {
-    private readonly ViewModels.TransactionsViewModel _vm;
+    private readonly TransactionsViewModel _vm;
 
-    public TransactionsPage(ViewModels.TransactionsViewModel vm)
+    public TransactionsPage(TransactionsViewModel vm)
     {
         InitializeComponent();
         BindingContext = _vm = vm;

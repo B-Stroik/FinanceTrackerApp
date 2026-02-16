@@ -2,6 +2,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="FinanceTrackerApp.Views.TransactionsPage"
+    x:Name="Page"
     Title="Transactions">
 
     <VerticalStackLayout Padding="12" Spacing="10">

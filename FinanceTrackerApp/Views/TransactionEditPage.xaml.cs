@@ -1,9 +1,12 @@
+using FinanceTrackerApp.ViewModels;
+
 namespace FinanceTrackerApp.Views;
 
-public partial class TransactionEditPage : ContentView
+public partial class TransactionEditPage : ContentPage
 {
-	public TransactionEditPage()
-	{
-		InitializeComponent();
-	}
+    public TransactionEditPage(TransactionEditViewModel vm)
+    {
+        InitializeComponent();
+        BindingContext = vm;
+    }
 }
