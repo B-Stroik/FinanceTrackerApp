@@ -5,7 +5,7 @@ using FinanceTrackerApp;
 using FinanceTrackerApp.ViewModels;
 using FinanceTrackerApp.Views;
 
-namespace FinanceTracker;
+namespace FinanceTrackerApp;
 
 public static class MauiProgram
 {

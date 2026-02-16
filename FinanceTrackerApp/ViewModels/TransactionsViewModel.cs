@@ -4,7 +4,7 @@ using FinanceTracker.Data.Repositories;
 using FinanceTracker.Models;
 using System.Collections.ObjectModel;
 
-namespace FinanceTracker.ViewModels;
+namespace FinanceTrackerApp.ViewModels;
 
 public partial class TransactionsViewModel : ObservableObject
 {
