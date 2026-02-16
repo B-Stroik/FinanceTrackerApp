@@ -1,10 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SQLite;
+using FinanceTracker.Models;
 
-namespace FinanceTrackerApp.Data
+namespace FinanceTracker.Data;
+
+public class AppDatabase
 {
-    internal class AppDatabase
+    private readonly SQLiteAsyncConnection _db;
+
+    public AppDatabase(string dbPath)
     {
+        _db = new SQLiteAsyncConnection(dbPath);
     }
+
+    public async Task InitAsync()
+    {
+        await _db.CreateTableAsync<TransactionItem>();
+        await _db.CreateTableAsync<BudgetItem>();
+    }
+
+    public SQLiteAsyncConnection Connection => _db;
 }

@@ -1,62 +1,39 @@
 ﻿using CommunityToolkit.Maui;
-using Microsoft.Extensions.Logging;
-using Syncfusion.Maui.Toolkit.Hosting;
+using FinanceTracker.Data;
+using FinanceTracker.Data.Repositories;
+using FinanceTrackerApp;
+using FinanceTrackerApp.ViewModels;
+using FinanceTrackerApp.Views;
 
-namespace FinanceTrackerApp
+namespace FinanceTracker;
+
+public static class MauiProgram
 {
-    public static class MauiProgram
+    public static MauiApp CreateMauiApp()
     {
-        public static MauiApp CreateMauiApp()
-        {
-            var builder = MauiApp.CreateBuilder();
-            builder
+        var builder = MauiApp.CreateBuilder();
+        builder
                 .UseMauiApp<App>()
-                .UseMauiCommunityToolkit()
-                .ConfigureSyncfusionToolkit()
-                .ConfigureMauiHandlers(handlers =>
-                {
-#if WINDOWS
-    				Microsoft.Maui.Controls.Handlers.Items.CollectionViewHandler.Mapper.AppendToMapping("KeyboardAccessibleCollectionView", (handler, view) =>
-    				{
-    					handler.PlatformView.SingleSelectionFollowsFocus = false;
-    				});
+                .UseMauiCommunityToolkit();
 
-    				Microsoft.Maui.Handlers.ContentViewHandler.Mapper.AppendToMapping(nameof(Pages.Controls.CategoryChart), (handler, view) =>
-    				{
-    					if (view is Pages.Controls.CategoryChart && handler.PlatformView is Microsoft.Maui.Platform.ContentPanel contentPanel)
-    					{
-    						contentPanel.IsTabStop = true;
-    					}
-    				});
-#endif
-                })
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                    fonts.AddFont("SegoeUI-Semibold.ttf", "SegoeSemibold");
-                    fonts.AddFont("FluentSystemIcons-Regular.ttf", FluentUI.FontFamily);
-                });
+        // Database path
+        string dbPath = Path.Combine(FileSystem.AppDataDirectory, "finance.db3");
 
-#if DEBUG
-    		builder.Logging.AddDebug();
-    		builder.Services.AddLogging(configure => configure.AddDebug());
-#endif
+        // DI
+        builder.Services.AddSingleton(new AppDatabase(dbPath));
+        builder.Services.AddSingleton<TransactionRepository>();
+        builder.Services.AddSingleton<BudgetRepository>();
 
-            builder.Services.AddSingleton<ProjectRepository>();
-            builder.Services.AddSingleton<TaskRepository>();
-            builder.Services.AddSingleton<CategoryRepository>();
-            builder.Services.AddSingleton<TagRepository>();
-            builder.Services.AddSingleton<SeedDataService>();
-            builder.Services.AddSingleton<ModalErrorHandler>();
-            builder.Services.AddSingleton<MainPageModel>();
-            builder.Services.AddSingleton<ProjectListPageModel>();
-            builder.Services.AddSingleton<ManageMetaPageModel>();
+        builder.Services.AddSingleton<TransactionsViewModel>();
+        builder.Services.AddTransient<TransactionEditViewModel>();
+        builder.Services.AddSingleton<BudgetsViewModel>();
+        builder.Services.AddSingleton<ReportsViewModel>();
 
-            builder.Services.AddTransientWithShellRoute<ProjectDetailPage, ProjectDetailPageModel>("project");
-            builder.Services.AddTransientWithShellRoute<TaskDetailPage, TaskDetailPageModel>("task");
+        builder.Services.AddSingleton<TransactionsPage>();
+        builder.Services.AddTransient<TransactionEditPage>();
+        builder.Services.AddSingleton<BudgetsPage>();
+        builder.Services.AddSingleton<ReportsPage>();
 
-            return builder.Build();
-        }
+        return builder.Build();
     }
 }
