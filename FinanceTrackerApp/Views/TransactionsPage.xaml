@@ -1,11 +1,41 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FinanceTrackerApp.Views.TransactionsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="FinanceTrackerApp.Views.TransactionsPage"
+    Title="Transactions">
+
+    <VerticalStackLayout Padding="12" Spacing="10">
+
+        <Button Text="Add Transaction"
+                Clicked="AddClicked"/>
+
+        <CollectionView ItemsSource="{Binding Transactions}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete"
+                                           Command="{Binding BindingContext.DeleteCommand, Source={x:Reference Name=Page}}"
+                                           CommandParameter="{Binding}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Grid Padding="10" ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Category}" FontAttributes="Bold"/>
+                                <Label Text="{Binding Date, StringFormat='{0:MMM d, yyyy}'}" FontSize="12"/>
+                                <Label Text="{Binding Note}" FontSize="12" Opacity="0.8"/>
+                            </VerticalStackLayout>
+
+                            <Label Grid.Column="1"
+                                   Text="{Binding Amount, StringFormat='${0:F2}'}"
+                                   VerticalOptions="Center"/>
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
     </VerticalStackLayout>
-</ContentView>
+</ContentPage>
