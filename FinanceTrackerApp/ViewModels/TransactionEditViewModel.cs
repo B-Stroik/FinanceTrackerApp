@@ -10,6 +10,9 @@ public partial class TransactionEditViewModel : ObservableObject
 {
     private readonly TransactionRepository _repo;
 
+    public IReadOnlyList<string> TransactionTypes { get; } =
+    new[] { "Expense", "Income" };
+
     [ObservableProperty] private int id;
     [ObservableProperty] private TransactionType type = TransactionType.Expense;
     [ObservableProperty] private decimal amount;

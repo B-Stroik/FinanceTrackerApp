@@ -5,8 +5,17 @@
     x:Class="FinanceTrackerApp.AppShell">
 
     <TabBar>
-        <ShellContent Title="Transactions" ContentTemplate="{DataTemplate views:TransactionsPage}" />
-        <ShellContent Title="Budgets" ContentTemplate="{DataTemplate views:BudgetsPage}" />
-        <ShellContent Title="Reports" ContentTemplate="{DataTemplate views:ReportsPage}" />
+        <Tab Title="Transactions">
+            <ShellContent ContentTemplate="{DataTemplate views:TransactionsPage}" />
+        </Tab>
+
+        <Tab Title="Budgets">
+            <ShellContent ContentTemplate="{DataTemplate views:BudgetsPage}" />
+        </Tab>
+
+        <Tab Title="Reports">
+            <ShellContent ContentTemplate="{DataTemplate views:ReportsPage}" />
+        </Tab>
     </TabBar>
+
 </Shell>

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using FinanceTrackerApp.Views;
 using Font = Microsoft.Maui.Font;
 
 namespace FinanceTrackerApp
@@ -9,6 +10,8 @@ namespace FinanceTrackerApp
         public AppShell()
         {
             InitializeComponent();
+
+            Routing.RegisterRoute(nameof(TransactionEditPage), typeof(TransactionEditPage));
         }
         public static async Task DisplaySnackbarAsync(string message)
         {
