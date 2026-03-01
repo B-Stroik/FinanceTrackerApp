@@ -1,11 +1,81 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FinanceTrackerApp.Views.ReportsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
-</ContentView>
+             x:Class="FinanceTrackerApp.Views.ReportsPage"
+             x:Name="Page"
+             Title="Reports">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="16">
+
+            <Label Text="{Binding ReportTitle}"
+                   FontSize="24"
+                   FontAttributes="Bold" />
+
+            <Grid ColumnDefinitions="*,*"
+                  RowDefinitions="Auto,Auto"
+                  ColumnSpacing="12"
+                  RowSpacing="12">
+
+                <Border Grid.Row="0"
+                        Grid.Column="0"
+                        Padding="12"
+                        StrokeShape="RoundRectangle 10">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Income" FontAttributes="Bold" />
+                        <Label Text="{Binding TotalIncome, StringFormat='${0:F2}'}"
+                               FontSize="18" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Row="0"
+                        Grid.Column="1"
+                        Padding="12"
+                        StrokeShape="RoundRectangle 10">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Expenses" FontAttributes="Bold" />
+                        <Label Text="{Binding TotalExpenses, StringFormat='${0:F2}'}"
+                               FontSize="18" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Padding="12"
+                        StrokeShape="RoundRectangle 10">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Net Total" FontAttributes="Bold" />
+                        <Label Text="{Binding NetTotal, StringFormat='${0:F2}'}"
+                               FontSize="20"
+                               FontAttributes="Bold" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <Label Text="Expenses by Category"
+                   FontSize="20"
+                   FontAttributes="Bold" />
+
+            <CollectionView ItemsSource="{Binding CategoryTotals}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,4"
+                                Padding="12"
+                                StrokeShape="RoundRectangle 10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="{Binding Category}"
+                                       FontAttributes="Bold" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding Total, StringFormat='${0:F2}'}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Refresh Report"
+                    Command="{Binding LoadAsyncCommand}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

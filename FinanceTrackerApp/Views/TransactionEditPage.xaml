@@ -7,8 +7,9 @@
         <VerticalStackLayout Padding="12" Spacing="10">
 
             <Label Text="Type" FontAttributes="Bold" />
-            <Picker ItemsSource="{Binding TransactionTypes}"
-                    SelectedItem="{Binding Type}" />
+            <Picker Title="Transaction Type"
+                ItemsSource="{Binding TransactionTypes}"
+                SelectedItem="{Binding Type}" />    
 
             <Entry Placeholder="Amount" Keyboard="Numeric"
                    Text="{Binding Amount}" />

@@ -1,9 +1,20 @@
+using FinanceTrackerApp.ViewModels;
+
 namespace FinanceTrackerApp.Views;
 
-public partial class ReportsPage : ContentView
+public partial class ReportsPage : ContentPage
 {
-	public ReportsPage()
-	{
-		InitializeComponent();
-	}
+    private readonly ReportsViewModel _vm;
+
+    public ReportsPage(ReportsViewModel vm)
+    {
+        InitializeComponent();
+        BindingContext = _vm = vm;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await _vm.LoadAsync();
+    }
 }

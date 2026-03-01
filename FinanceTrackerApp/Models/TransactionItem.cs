@@ -20,4 +20,10 @@ public class TransactionItem
     public DateTime Date { get; set; } = DateTime.Today;
 
     public string? Note { get; set; }
+
+    [Ignore]
+    public string DisplayAmount =>
+    Type == TransactionType.Expense
+        ? $"-${Amount:F2}"
+        : $"+${Amount:F2}";
 }

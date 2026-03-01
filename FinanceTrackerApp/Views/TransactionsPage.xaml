@@ -30,8 +30,8 @@
                             </VerticalStackLayout>
 
                             <Label Grid.Column="1"
-                                   Text="{Binding Amount, StringFormat='${0:F2}'}"
-                                   VerticalOptions="Center"/>
+                               Text="{Binding DisplayAmount}"
+                               VerticalOptions="Center"/>
                         </Grid>
                     </SwipeView>
                 </DataTemplate>
