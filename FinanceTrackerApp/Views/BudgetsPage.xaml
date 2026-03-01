@@ -46,10 +46,10 @@
             </Grid>
 
             <Button Text="Save Budget"
-                    Command="{Binding SaveBudgetAsyncCommand}" />
+                    Command="{Binding SaveBudgetCommand}" />
 
             <Button Text="Refresh Budgets"
-                    Command="{Binding LoadAsyncCommand}" />
+                    Command="{Binding LoadCommand}" />
 
             <Label Text="{Binding Error}"
                    TextColor="Red"
@@ -66,7 +66,7 @@
                             <SwipeView.RightItems>
                                 <SwipeItems>
                                     <SwipeItem Text="Delete"
-                                               Command="{Binding BindingContext.DeleteAsyncCommand, Source={x:Reference Name=Page}}"
+                                               Command="{Binding BindingContext.DeleteCommand, Source={x:Reference Name=Page}}"
                                                CommandParameter="{Binding}" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
