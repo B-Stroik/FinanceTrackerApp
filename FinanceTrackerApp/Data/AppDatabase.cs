@@ -1,22 +1,29 @@
-﻿using SQLite;
-using FinanceTracker.Models;
+﻿using FinanceTracker.Models;
+using SQLite;
 
 namespace FinanceTracker.Data;
 
 public class AppDatabase
 {
-    private readonly SQLiteAsyncConnection _db;
+    private readonly string _dbPath;
+    private SQLiteAsyncConnection? _database;
 
     public AppDatabase(string dbPath)
     {
-        _db = new SQLiteAsyncConnection(dbPath);
+        _dbPath = dbPath;
     }
+
+    public SQLiteAsyncConnection Database =>
+        _database ?? throw new InvalidOperationException("Database has not been initialized.");
 
     public async Task InitAsync()
     {
-        await _db.CreateTableAsync<TransactionItem>();
-        await _db.CreateTableAsync<BudgetItem>();
-    }
+        if (_database is not null)
+            return;
 
-    public SQLiteAsyncConnection Connection => _db;
+        _database = new SQLiteAsyncConnection(_dbPath);
+
+        await _database.CreateTableAsync<TransactionItem>();
+        await _database.CreateTableAsync<BudgetItem>();
+    }
 }
