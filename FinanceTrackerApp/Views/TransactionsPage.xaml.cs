@@ -19,8 +19,4 @@ public partial class TransactionsPage : ContentPage
         await _vm.LoadAsync();
     }
 
-    private async void AddClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync(nameof(TransactionEditPage));
-    }
 }

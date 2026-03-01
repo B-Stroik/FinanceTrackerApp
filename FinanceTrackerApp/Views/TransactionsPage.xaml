@@ -8,7 +8,7 @@
     <VerticalStackLayout Padding="12" Spacing="10">
 
         <Button Text="Add Transaction"
-                Clicked="AddClicked"/>
+                Command="{Binding BindingContext.AddTransaction, Source={x:Reference Name=Page}}" ></Button>
 
         <CollectionView ItemsSource="{Binding Transactions}">
             <CollectionView.ItemTemplate>

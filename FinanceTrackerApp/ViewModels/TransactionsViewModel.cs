@@ -2,13 +2,18 @@
 using CommunityToolkit.Mvvm.Input;
 using FinanceTracker.Data.Repositories;
 using FinanceTracker.Models;
+using FinanceTrackerApp.Views;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
+
 
 namespace FinanceTrackerApp.ViewModels;
 
 public partial class TransactionsViewModel : ObservableObject
 {
     private readonly TransactionRepository _repo;
+
+    public ICommand AddTransaction { get; }
 
     public ObservableCollection<TransactionItem> Transactions { get; } = new();
 
@@ -17,6 +22,7 @@ public partial class TransactionsViewModel : ObservableObject
     public TransactionsViewModel(TransactionRepository repo)
     {
         _repo = repo;
+        AddTransaction = new Command<TransactionItem>(AddTransactionItem);
     }
 
     [RelayCommand]
@@ -43,5 +49,14 @@ public partial class TransactionsViewModel : ObservableObject
         if (item is null) return;
         await _repo.DeleteAsync(item);
         Transactions.Remove(item);
+    }
+
+    private void AddTransactionItem(TransactionItem? item)
+    {
+        if (item is null) return;
+        else
+        {
+            Transactions.Add(item);
+        }
     }
 }
