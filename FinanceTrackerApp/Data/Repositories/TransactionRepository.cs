@@ -9,7 +9,7 @@ public class TransactionRepository
 
     public TransactionRepository(AppDatabase database)
     {
-        _db = database.Connection;
+        _db = database.Database;
     }
 
     public Task<List<TransactionItem>> GetAllAsync() =>
