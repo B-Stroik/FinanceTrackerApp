@@ -9,8 +9,10 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        MainPage = new AppShell();
-
         Task.Run(async () => await db.InitAsync());
+    }
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        return new Window(new AppShell());
     }
 }

@@ -23,11 +23,13 @@
                             </SwipeItems>
                         </SwipeView.RightItems>
 
-                        <Grid Padding="10" ColumnDefinitions="*,Auto">
+                        <Grid x:Name="TransactionRow" Padding="10" ColumnDefinitions="*,Auto">
                             <Grid.Behaviors>
                                 <toolkit:TouchBehavior
-                                    LongPressCommand="{Binding BindingContext.ShowTransactionOptionsCommand, Source={x:Reference Name=Page}}"
-                                    LongPressCommandParameter="{Binding}" />
+                                    ShouldMakeChildrenInputTransparent="True"
+                                    LongPressDuration="750"
+                                    LongPressCommand="{Binding BindingContext.ShowTransactionOptionsCommand, Source={x:Reference Page}}"
+                                    LongPressCommandParameter="{Binding BindingContext, Source={x:Reference TransactionRow}}" />
                             </Grid.Behaviors>
                             <VerticalStackLayout>
                                 <Label Text="{Binding Category}" FontAttributes="Bold"/>

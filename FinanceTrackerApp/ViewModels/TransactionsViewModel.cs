@@ -59,7 +59,7 @@ public partial class TransactionsViewModel : ObservableObject
         var page = Shell.Current.CurrentPage;
         if (page is null) return;
 
-        var action = await page.DisplayActionSheet(
+        var action = await page.DisplayActionSheetAsync(
             "Transaction Options",
             "Cancel",
             null,
@@ -69,7 +69,7 @@ public partial class TransactionsViewModel : ObservableObject
         switch (action)
         {
             case "View Details":
-                await page.DisplayAlert(
+                await page.DisplayAlertAsync(
                     item.Category,
                     $"Amount: {item.DisplayAmount}\nType: {item.Type}\nDate: {item.Date:MMM d, yyyy}\nNote: {item.Note ?? "-"}",
                     "Close");
