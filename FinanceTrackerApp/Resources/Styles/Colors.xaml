@@ -5,20 +5,20 @@
 
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
-    <Color x:Key="Primary">#512BD4</Color>
-    <Color x:Key="PrimaryDark">#ac99ea</Color>
-    <Color x:Key="PrimaryDarkText">#242424</Color>
-    <Color x:Key="Secondary">#DFD8F7</Color>
-    <Color x:Key="SecondaryDarkText">#9880e5</Color>
-    <Color x:Key="Tertiary">#2B0B98</Color>
+    <Color x:Key="Primary">#F4C95D</Color>
+    <Color x:Key="PrimaryDark">#E2B54A</Color>
+    <Color x:Key="PrimaryDarkText">#5D4A19</Color>
+    <Color x:Key="Secondary">#FBE9A9</Color>
+    <Color x:Key="SecondaryDarkText">#8A6A1F</Color>
+    <Color x:Key="Tertiary">#D9A629</Color>
 
-    <Color x:Key="DarkBackground">#17171a</Color>
-    <Color x:Key="LightOnDarkBackground">#C3C3C3</Color>
-    <Color x:Key="LightBackground">#F2F2F2</Color>
-    <Color x:Key="DarkOnLightBackground">#0D0D0D</Color>
+    <Color x:Key="DarkBackground">#3B2F16</Color>
+    <Color x:Key="LightOnDarkBackground">#FFF6D8</Color>
+    <Color x:Key="LightBackground">#FFF9E8</Color>
+    <Color x:Key="DarkOnLightBackground">#4D3A12</Color>
 
-    <Color x:Key="LightSecondaryBackground">#E0E0E0</Color>
-    <Color x:Key="DarkSecondaryBackground">#222228</Color>
+    <Color x:Key="LightSecondaryBackground">#FFF2CC</Color>
+    <Color x:Key="DarkSecondaryBackground">#4A3A1A</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
@@ -26,14 +26,14 @@
     <Color x:Key="MidnightBlue">#190649</Color>
     <Color x:Key="OffBlack">#1f1f1f</Color>
 
-    <Color x:Key="Gray100">#E1E1E1</Color>
-    <Color x:Key="Gray200">#C8C8C8</Color>
-    <Color x:Key="Gray300">#ACACAC</Color>
-    <Color x:Key="Gray400">#919191</Color>
-    <Color x:Key="Gray500">#6E6E6E</Color>
-    <Color x:Key="Gray600">#404040</Color>
-    <Color x:Key="Gray900">#212121</Color>
-    <Color x:Key="Gray950">#141414</Color>
+    <Color x:Key="Gray100">#FFF8E3</Color>
+    <Color x:Key="Gray200">#F5E8BF</Color>
+    <Color x:Key="Gray300">#E8D59A</Color>
+    <Color x:Key="Gray400">#D4BC7E</Color>
+    <Color x:Key="Gray500">#B09154</Color>
+    <Color x:Key="Gray600">#8A6C35</Color>
+    <Color x:Key="Gray900">#4F3B16</Color>
+    <Color x:Key="Gray950">#3C2C10</Color>
 
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
