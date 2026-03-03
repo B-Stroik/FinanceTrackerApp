@@ -1,50 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:FinanceTrackerApp.Views.Controls"
     x:Class="FinanceTrackerApp.Views.TransactionsPage"
     x:Name="Page"
     Title="Transactions">
 
-    <VerticalStackLayout Padding="12" Spacing="10">
+    <AbsoluteLayout>
 
-        <Button Text="Add Transaction"
-            Clicked="AddClicked"/>
+        <VerticalStackLayout
+            Padding="12"
+            Spacing="10"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
 
-        <CollectionView ItemsSource="{Binding Transactions}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <SwipeView>
-                        <SwipeView.RightItems>
-                            <SwipeItems>
-                                <SwipeItem Text="Delete"
-                                           Command="{Binding BindingContext.DeleteCommand, Source={x:Reference Name=Page}}"
-                                           CommandParameter="{Binding}" />
-                            </SwipeItems>
-                        </SwipeView.RightItems>
+            <Button Text="Add Transaction"
+                    Clicked="AddClicked" />
 
-                        <Grid x:Name="TransactionRow" Padding="10" ColumnDefinitions="*,Auto">
-                            <Grid.Behaviors>
-                                <toolkit:TouchBehavior
-                                    ShouldMakeChildrenInputTransparent="True"
-                                    LongPressDuration="750"
-                                    LongPressCommand="{Binding BindingContext.ShowTransactionOptionsCommand, Source={x:Reference Page}}"
-                                    LongPressCommandParameter="{Binding BindingContext, Source={x:Reference TransactionRow}}" />
-                            </Grid.Behaviors>
-                            <VerticalStackLayout>
-                                <Label Text="{Binding Category}" FontAttributes="Bold"/>
-                                <Label Text="{Binding Date, StringFormat='{0:MMM d, yyyy}'}" FontSize="12"/>
-                                <Label Text="{Binding Note}" FontSize="12" Opacity="0.8"/>
-                            </VerticalStackLayout>
+            <CollectionView ItemsSource="{Binding Transactions}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Delete"
+                                               Command="{Binding BindingContext.DeleteCommand, Source={x:Reference Page}}"
+                                               CommandParameter="{Binding}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
 
-                            <Label Grid.Column="1"
-                               Text="{Binding DisplayAmount}"
-                               VerticalOptions="Center"/>
-                        </Grid>
-                    </SwipeView>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                            <Grid x:Name="TransactionRow"
+                                  Padding="10"
+                                  ColumnDefinitions="*,Auto">
 
-    </VerticalStackLayout>
+                                <Grid.Behaviors>
+                                    <toolkit:TouchBehavior
+                                        ShouldMakeChildrenInputTransparent="True"
+                                        LongPressDuration="750"
+                                        LongPressCommand="{Binding BindingContext.ShowTransactionOptionsCommand, Source={x:Reference Page}}"
+                                        LongPressCommandParameter="{Binding BindingContext, Source={x:Reference TransactionRow}}" />
+                                </Grid.Behaviors>
+
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Category}"
+                                           FontAttributes="Bold" />
+                                    <Label Text="{Binding Date, StringFormat='{0:MMM d, yyyy}'}"
+                                           FontSize="12" />
+                                    <Label Text="{Binding Note}"
+                                           FontSize="12"
+                                           Opacity="0.8" />
+                                </VerticalStackLayout>
+
+                                <Label Grid.Column="1"
+                                       Text="{Binding DisplayAmount}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+
+        <controls:ThemeToggleView
+            AbsoluteLayout.LayoutBounds="0.02,0.98,AutoSize,AutoSize"
+            AbsoluteLayout.LayoutFlags="PositionProportional" />
+
+    </AbsoluteLayout>
 </ContentPage>

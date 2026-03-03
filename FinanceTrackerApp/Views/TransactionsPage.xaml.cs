@@ -1,4 +1,3 @@
-using Syncfusion.Maui.Toolkit.Carousel;
 using FinanceTrackerApp.ViewModels;
 
 namespace FinanceTrackerApp.Views;

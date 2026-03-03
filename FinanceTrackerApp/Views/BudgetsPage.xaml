@@ -1,120 +1,145 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:FinanceTrackerApp.Views.Controls"
              x:Class="FinanceTrackerApp.Views.BudgetsPage"
              x:Name="Page"
              Title="Budgets">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="16" Spacing="14">
+    <AbsoluteLayout>
 
-            <Label Text="Monthly Budgets"
-                   FontSize="24"
-                   FontAttributes="Bold" />
+        <ScrollView
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
 
-            <Grid ColumnDefinitions="*,*"
-                  RowDefinitions="Auto,Auto"
-                  ColumnSpacing="12"
-                  RowSpacing="12">
+            <VerticalStackLayout Padding="16" Spacing="14">
 
-                <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="4">
-                    <Label Text="Month" />
-                    <Entry Text="{Binding SelectedMonth}"
-                           Keyboard="Numeric"
-                           Placeholder="Month" />
-                </VerticalStackLayout>
+                <Label Text="Monthly Budgets"
+                       FontSize="24"
+                       FontAttributes="Bold" />
 
-                <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="4">
-                    <Label Text="Year" />
-                    <Entry Text="{Binding SelectedYear}"
-                           Keyboard="Numeric"
-                           Placeholder="Year" />
-                </VerticalStackLayout>
+                <Grid ColumnDefinitions="*,*"
+                      RowDefinitions="Auto,Auto"
+                      ColumnSpacing="12"
+                      RowSpacing="12">
 
-                <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
-                    <Label Text="Category" />
-                    <Entry Text="{Binding Category}"
-                           Placeholder="Ex: Food" />
-                </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Row="0"
+                                         Grid.Column="0"
+                                         Spacing="4">
+                        <Label Text="Month" />
+                        <Entry Text="{Binding SelectedMonth}"
+                               Keyboard="Numeric"
+                               Placeholder="Month" />
+                    </VerticalStackLayout>
 
-                <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
-                    <Label Text="Budget Amount" />
-                    <Entry Text="{Binding LimitAmount}"
-                           Keyboard="Numeric"
-                           Placeholder="0.00" />
-                </VerticalStackLayout>
-            </Grid>
+                    <VerticalStackLayout Grid.Row="0"
+                                         Grid.Column="1"
+                                         Spacing="4">
+                        <Label Text="Year" />
+                        <Entry Text="{Binding SelectedYear}"
+                               Keyboard="Numeric"
+                               Placeholder="Year" />
+                    </VerticalStackLayout>
 
-            <Button Text="Save Budget"
-                    Command="{Binding SaveBudgetCommand}" />
+                    <VerticalStackLayout Grid.Row="1"
+                                         Grid.Column="0"
+                                         Spacing="4">
+                        <Label Text="Category" />
+                        <Entry Text="{Binding Category}"
+                               Placeholder="Ex: Food" />
+                    </VerticalStackLayout>
 
-            <Button Text="Refresh Budgets"
-                    Command="{Binding LoadCommand}" />
+                    <VerticalStackLayout Grid.Row="1"
+                                         Grid.Column="1"
+                                         Spacing="4">
+                        <Label Text="Budget Amount" />
+                        <Entry Text="{Binding LimitAmount}"
+                               Keyboard="Numeric"
+                               Placeholder="0.00" />
+                    </VerticalStackLayout>
 
-            <Label Text="{Binding Error}"
-                   TextColor="Red"
-                   IsVisible="{Binding Error}" />
+                </Grid>
 
-            <Label Text="This Month's Budget List"
-                   FontSize="20"
-                   FontAttributes="Bold" />
+                <Button Text="Save Budget"
+                        Command="{Binding SaveBudgetCommand}" />
 
-            <CollectionView ItemsSource="{Binding Budgets}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <SwipeView>
-                            <SwipeView.RightItems>
-                                <SwipeItems>
-                                    <SwipeItem Text="Delete"
-                                               Command="{Binding BindingContext.DeleteCommand, Source={x:Reference Name=Page}}"
-                                               CommandParameter="{Binding}" />
-                                </SwipeItems>
-                            </SwipeView.RightItems>
+                <Button Text="Refresh Budgets"
+                        Command="{Binding LoadCommand}" />
 
-                            <Border Margin="0,4"
-                                    Padding="12"
-                                    StrokeShape="RoundRectangle 10">
-                                <VerticalStackLayout Spacing="6">
+                <Label Text="{Binding Error}"
+                       TextColor="Red"
+                       IsVisible="{Binding Error}" />
 
-                                    <Grid ColumnDefinitions="*,Auto">
-                                        <Label Text="{Binding Category}"
-                                               FontAttributes="Bold"
-                                               FontSize="18" />
+                <Label Text="This Month's Budget List"
+                       FontSize="20"
+                       FontAttributes="Bold" />
 
-                                        <Label Grid.Column="1"
-                                               Text="{Binding MonthLabel}" />
-                                    </Grid>
+                <CollectionView ItemsSource="{Binding Budgets}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Delete"
+                                                   Command="{Binding BindingContext.DeleteCommand, Source={x:Reference Page}}"
+                                                   CommandParameter="{Binding}" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
 
-                                    <Grid ColumnDefinitions="*,*,*">
-                                        <VerticalStackLayout>
-                                            <Label Text="Budgeted"
+                                <Border Margin="0,4"
+                                        Padding="12"
+                                        StrokeShape="RoundRectangle 10">
+
+                                    <VerticalStackLayout Spacing="6">
+
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label Text="{Binding Category}"
                                                    FontAttributes="Bold"
-                                                   FontSize="12" />
-                                            <Label Text="{Binding LimitAmount, StringFormat='${0:F2}'}" />
-                                        </VerticalStackLayout>
+                                                   FontSize="18" />
 
-                                        <VerticalStackLayout Grid.Column="1">
-                                            <Label Text="Spent"
-                                                   FontAttributes="Bold"
-                                                   FontSize="12" />
-                                            <Label Text="{Binding Spent, StringFormat='${0:F2}'}" />
-                                        </VerticalStackLayout>
+                                            <Label Grid.Column="1"
+                                                   Text="{Binding MonthLabel}" />
+                                        </Grid>
 
-                                        <VerticalStackLayout Grid.Column="2">
-                                            <Label Text="Remaining"
-                                                   FontAttributes="Bold"
-                                                   FontSize="12" />
-                                            <Label Text="{Binding Remaining, StringFormat='${0:F2}'}" />
-                                        </VerticalStackLayout>
-                                    </Grid>
+                                        <Grid ColumnDefinitions="*,*,*">
 
-                                </VerticalStackLayout>
-                            </Border>
-                        </SwipeView>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                            <VerticalStackLayout>
+                                                <Label Text="Budgeted"
+                                                       FontAttributes="Bold"
+                                                       FontSize="12" />
+                                                <Label Text="{Binding LimitAmount, StringFormat='${0:F2}'}" />
+                                            </VerticalStackLayout>
 
-        </VerticalStackLayout>
-    </ScrollView>
+                                            <VerticalStackLayout Grid.Column="1">
+                                                <Label Text="Spent"
+                                                       FontAttributes="Bold"
+                                                       FontSize="12" />
+                                                <Label Text="{Binding Spent, StringFormat='${0:F2}'}" />
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout Grid.Column="2">
+                                                <Label Text="Remaining"
+                                                       FontAttributes="Bold"
+                                                       FontSize="12" />
+                                                <Label Text="{Binding Remaining, StringFormat='${0:F2}'}" />
+                                            </VerticalStackLayout>
+
+                                        </Grid>
+
+                                    </VerticalStackLayout>
+
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <controls:ThemeToggleView
+            AbsoluteLayout.LayoutBounds="0.02,0.98,AutoSize,AutoSize"
+            AbsoluteLayout.LayoutFlags="PositionProportional" />
+
+    </AbsoluteLayout>
 </ContentPage>

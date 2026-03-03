@@ -1,81 +1,98 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:FinanceTrackerApp.Views.Controls"
              x:Class="FinanceTrackerApp.Views.ReportsPage"
              x:Name="Page"
              Title="Reports">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="16" Spacing="16">
+    <AbsoluteLayout>
 
-            <Label Text="{Binding ReportTitle}"
-                   FontSize="24"
-                   FontAttributes="Bold" />
+        <ScrollView
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
 
-            <Grid ColumnDefinitions="*,*"
-                  RowDefinitions="Auto,Auto"
-                  ColumnSpacing="12"
-                  RowSpacing="12">
+            <VerticalStackLayout Padding="16" Spacing="16">
 
-                <Border Grid.Row="0"
-                        Grid.Column="0"
-                        Padding="12"
-                        StrokeShape="RoundRectangle 10">
-                    <VerticalStackLayout Spacing="4">
-                        <Label Text="Income" FontAttributes="Bold" />
-                        <Label Text="{Binding TotalIncome, StringFormat='${0:F2}'}"
-                               FontSize="18" />
-                    </VerticalStackLayout>
-                </Border>
+                <Label Text="{Binding ReportTitle}"
+                       FontSize="24"
+                       FontAttributes="Bold" />
 
-                <Border Grid.Row="0"
-                        Grid.Column="1"
-                        Padding="12"
-                        StrokeShape="RoundRectangle 10">
-                    <VerticalStackLayout Spacing="4">
-                        <Label Text="Expenses" FontAttributes="Bold" />
-                        <Label Text="{Binding TotalExpenses, StringFormat='${0:F2}'}"
-                               FontSize="18" />
-                    </VerticalStackLayout>
-                </Border>
+                <Grid ColumnDefinitions="*,*"
+                      RowDefinitions="Auto,Auto"
+                      ColumnSpacing="12"
+                      RowSpacing="12">
 
-                <Border Grid.Row="1"
-                        Grid.ColumnSpan="2"
-                        Padding="12"
-                        StrokeShape="RoundRectangle 10">
-                    <VerticalStackLayout Spacing="4">
-                        <Label Text="Net Total" FontAttributes="Bold" />
-                        <Label Text="{Binding NetTotal, StringFormat='${0:F2}'}"
-                               FontSize="20"
-                               FontAttributes="Bold" />
-                    </VerticalStackLayout>
-                </Border>
-            </Grid>
+                    <Border Grid.Row="0"
+                            Grid.Column="0"
+                            Padding="12"
+                            StrokeShape="RoundRectangle 10">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Income"
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding TotalIncome, StringFormat='${0:F2}'}"
+                                   FontSize="18" />
+                        </VerticalStackLayout>
+                    </Border>
 
-            <Label Text="Expenses by Category"
-                   FontSize="20"
-                   FontAttributes="Bold" />
+                    <Border Grid.Row="0"
+                            Grid.Column="1"
+                            Padding="12"
+                            StrokeShape="RoundRectangle 10">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Expenses"
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding TotalExpenses, StringFormat='${0:F2}'}"
+                                   FontSize="18" />
+                        </VerticalStackLayout>
+                    </Border>
 
-            <CollectionView ItemsSource="{Binding CategoryTotals}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Margin="0,4"
-                                Padding="12"
-                                StrokeShape="RoundRectangle 10">
-                            <Grid ColumnDefinitions="*,Auto">
-                                <Label Text="{Binding Category}"
-                                       FontAttributes="Bold" />
-                                <Label Grid.Column="1"
-                                       Text="{Binding Total, StringFormat='${0:F2}'}" />
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                    <Border Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Padding="12"
+                            StrokeShape="RoundRectangle 10">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Net Total"
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding NetTotal, StringFormat='${0:F2}'}"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+                        </VerticalStackLayout>
+                    </Border>
 
-            <Button Text="Refresh Report"
-                    Command="{Binding LoadAsyncCommand}" />
+                </Grid>
 
-        </VerticalStackLayout>
-    </ScrollView>
+                <Label Text="Expenses by Category"
+                       FontSize="20"
+                       FontAttributes="Bold" />
+
+                <CollectionView ItemsSource="{Binding CategoryTotals}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,4"
+                                    Padding="12"
+                                    StrokeShape="RoundRectangle 10">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Text="{Binding Category}"
+                                           FontAttributes="Bold" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Total, StringFormat='${0:F2}'}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button Text="Refresh Report"
+                        Command="{Binding LoadAsyncCommand}" />
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+        <controls:ThemeToggleView
+            AbsoluteLayout.LayoutBounds="0.02,0.98,AutoSize,AutoSize"
+            AbsoluteLayout.LayoutFlags="PositionProportional" />
+
+    </AbsoluteLayout>
 </ContentPage>

@@ -3,6 +3,7 @@ using FinanceTracker.Data;
 using FinanceTracker.Data.Repositories;
 using FinanceTrackerApp;
 using FinanceTrackerApp.ViewModels;
+using FinanceTrackerApp.Services;
 using FinanceTrackerApp.Views;
 
 namespace FinanceTrackerApp;
@@ -23,6 +24,7 @@ public static class MauiProgram
         builder.Services.AddSingleton(new AppDatabase(dbPath));
         builder.Services.AddSingleton<TransactionRepository>();
         builder.Services.AddSingleton<BudgetRepository>();
+        builder.Services.AddSingleton<TimeBasedThemeService>();
 
         builder.Services.AddSingleton<TransactionsViewModel>();
         builder.Services.AddTransient<TransactionEditViewModel>();

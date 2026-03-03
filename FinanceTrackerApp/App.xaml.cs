@@ -1,15 +1,16 @@
 ﻿using FinanceTracker.Data;
-using Microsoft.Extensions.DependencyInjection;
+using FinanceTrackerApp.Services;
 
 namespace FinanceTrackerApp;
 
 public partial class App : Application
 {
-    public App(AppDatabase db)
+    public App(AppDatabase db, TimeBasedThemeService timeBasedThemeService)
     {
         InitializeComponent();
 
         Task.Run(async () => await db.InitAsync());
+        timeBasedThemeService.InitializeFromCurrentTime();
     }
     protected override Window CreateWindow(IActivationState? activationState)
     {

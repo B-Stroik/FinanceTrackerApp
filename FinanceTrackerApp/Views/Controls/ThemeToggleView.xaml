@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinanceTrackerApp.Views.Controls.ThemeToggleView">
+    <Button x:Name="ThemeToggleButton"
+            Text="🌙 Auto theme: On"
+            FontSize="12"
+            Padding="10,6"
+            CornerRadius="14"
+            Opacity="0.9"
+            Clicked="ThemeToggleClicked" />
+</ContentView>
