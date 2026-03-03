@@ -51,6 +51,36 @@ public partial class TransactionsViewModel : ObservableObject
         Transactions.Remove(item);
     }
 
+    [RelayCommand]
+    public async Task ShowTransactionOptionsAsync(TransactionItem item)
+    {
+        if (item is null) return;
+
+        var page = Shell.Current.CurrentPage;
+        if (page is null) return;
+
+        var action = await page.DisplayActionSheet(
+            "Transaction Options",
+            "Cancel",
+            null,
+            "View Details",
+            "Quick Edit");
+
+        switch (action)
+        {
+            case "View Details":
+                await page.DisplayAlert(
+                    item.Category,
+                    $"Amount: {item.DisplayAmount}\nType: {item.Type}\nDate: {item.Date:MMM d, yyyy}\nNote: {item.Note ?? "-"}",
+                    "Close");
+                break;
+
+            case "Quick Edit":
+                await Shell.Current.GoToAsync($"{nameof(TransactionEditPage)}?transactionId={item.Id}");
+                break;
+        }
+    }
+
     private void AddTransactionItem(TransactionItem? item)
     {
         if (item is null) return;

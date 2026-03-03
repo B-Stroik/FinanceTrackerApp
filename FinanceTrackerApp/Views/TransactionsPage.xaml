@@ -24,6 +24,11 @@
                         </SwipeView.RightItems>
 
                         <Grid Padding="10" ColumnDefinitions="*,Auto">
+                            <Grid.Behaviors>
+                                <toolkit:TouchBehavior
+                                    LongPressCommand="{Binding BindingContext.ShowTransactionOptionsCommand, Source={x:Reference Name=Page}}"
+                                    LongPressCommandParameter="{Binding}" />
+                            </Grid.Behaviors>
                             <VerticalStackLayout>
                                 <Label Text="{Binding Category}" FontAttributes="Bold"/>
                                 <Label Text="{Binding Date, StringFormat='{0:MMM d, yyyy}'}" FontSize="12"/>
