@@ -1,3 +1,6 @@
 <Solution>
-  <Project Path="FinanceTrackerApp/FinanceTrackerApp.csproj" />
+  <Project Path="FinanceTrackerApi/FinanceTrackerApi.csproj" Id="5d074560-8e23-4cf9-9950-16762e3968eb" />
+  <Project Path="FinanceTrackerApp/FinanceTrackerApp.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
 </Solution>
