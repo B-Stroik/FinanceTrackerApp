@@ -50,6 +50,16 @@ public class TransactionService : ITransactionService
             throw new ArgumentException("Category is required.");
         }
 
+        if (transaction.Amount <= 0)
+        {
+            throw new ArgumentException("Amount must be greater than zero.");
+        }
+
+        if (!Enum.IsDefined(transaction.Type))
+        {
+            throw new ArgumentException("Transaction type must be Expense or Income.");
+        }
+
         if (string.IsNullOrWhiteSpace(transaction.Description))
         {
             throw new ArgumentException("Description is required.");

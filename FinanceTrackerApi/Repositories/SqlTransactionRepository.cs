@@ -15,7 +15,7 @@ public class SqlTransactionRepository : ITransactionRepository
 
     public async Task<IReadOnlyList<Transaction>> GetAllAsync()
     {
-        const string sql = "SELECT Id, [Date], Amount, Category, Description FROM Transactions ORDER BY [Date] DESC;";
+        const string sql = "SELECT Id, [Date], Amount, [Type], Category, Description FROM Transactions ORDER BY [Date] DESC;";
         await EnsureTableAsync();
 
         var transactions = new List<Transaction>();
@@ -34,7 +34,7 @@ public class SqlTransactionRepository : ITransactionRepository
 
     public async Task<Transaction?> GetByIdAsync(int id)
     {
-        const string sql = "SELECT Id, [Date], Amount, Category, Description FROM Transactions WHERE Id = @Id;";
+        const string sql = "SELECT Id, [Date], Amount, [Type], Category, Description FROM Transactions WHERE Id = @Id;";
         await EnsureTableAsync();
 
         await using var connection = new SqlConnection(_connectionString);
@@ -49,9 +49,9 @@ public class SqlTransactionRepository : ITransactionRepository
     public async Task<Transaction> CreateAsync(Transaction transaction)
     {
         const string sql = @"
-            INSERT INTO Transactions ([Date], Amount, Category, Description)
+            INSERT INTO Transactions ([Date], Amount, [Type], Category, Description)
             OUTPUT INSERTED.Id
-            VALUES (@Date, @Amount, @Category, @Description);";
+            VALUES (@Date, @Amount, @Type, @Category, @Description);";
         await EnsureTableAsync();
 
         await using var connection = new SqlConnection(_connectionString);
@@ -67,7 +67,7 @@ public class SqlTransactionRepository : ITransactionRepository
     {
         const string sql = @"
             UPDATE Transactions
-            SET [Date] = @Date, Amount = @Amount, Category = @Category, Description = @Description
+            SET [Date] = @Date, Amount = @Amount, [Type] = @Type, Category = @Category, Description = @Description
             WHERE Id = @Id;";
         await EnsureTableAsync();
 
@@ -103,14 +103,24 @@ public class SqlTransactionRepository : ITransactionRepository
                 Id INT IDENTITY(1,1) PRIMARY KEY,
                 [Date] DATETIME2 NOT NULL,
                 Amount DECIMAL(18,2) NOT NULL,
+                [Type] INT NOT NULL,
                 Category NVARCHAR(100) NOT NULL,
                 Description NVARCHAR(500) NOT NULL
             );";
+        const string ensureTypeColumnSql = @"
+            IF EXISTS (SELECT * FROM sysobjects WHERE name='Transactions' AND xtype='U')
+            AND COL_LENGTH('Transactions', 'Type') IS NULL
+            BEGIN
+                ALTER TABLE Transactions
+                ADD [Type] INT NOT NULL DEFAULT 0;
+            END";
 
         await using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();
-        await using var command = new SqlCommand(sql, connection);
-        await command.ExecuteNonQueryAsync();
+        await using var createCommand = new SqlCommand(sql, connection);
+        await createCommand.ExecuteNonQueryAsync();
+        await using var alterCommand = new SqlCommand(ensureTypeColumnSql, connection);
+        await alterCommand.ExecuteNonQueryAsync();
     }
 
     private static Transaction MapTransaction(SqlDataReader reader)
@@ -120,8 +130,9 @@ public class SqlTransactionRepository : ITransactionRepository
             Id = reader.GetInt32(0),
             Date = reader.GetDateTime(1),
             Amount = reader.GetDecimal(2),
-            Category = reader.GetString(3),
-            Description = reader.GetString(4)
+            Type = (TransactionType)reader.GetInt32(3),
+            Category = reader.GetString(4),
+            Description = reader.GetString(5)
         };
     }
 
@@ -129,6 +140,7 @@ public class SqlTransactionRepository : ITransactionRepository
     {
         command.Parameters.AddWithValue("@Date", transaction.Date);
         command.Parameters.AddWithValue("@Amount", transaction.Amount);
+        command.Parameters.AddWithValue("@Type", transaction.Type);
         command.Parameters.AddWithValue("@Category", transaction.Category);
         command.Parameters.AddWithValue("@Description", transaction.Description);
     }
