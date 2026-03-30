@@ -1,33 +1,111 @@
 ﻿using FinanceTracker.Models;
-using SQLite;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 
 namespace FinanceTracker.Data.Repositories;
 
 public class TransactionRepository
 {
-    private readonly SQLiteAsyncConnection _db;
+    private readonly HttpClient _httpClient;
 
-    public TransactionRepository(AppDatabase database)
+    public TransactionRepository(HttpClient httpClient)
     {
-        _db = database.Database;
+        _httpClient = httpClient;
     }
 
-    public Task<List<TransactionItem>> GetAllAsync() =>
-        _db.Table<TransactionItem>()
-           .OrderByDescending(t => t.Date)
-           .ToListAsync();
+    public async Task<List<TransactionItem>> GetAllAsync()
+    {
+        var transactions = await _httpClient.GetFromJsonAsync<List<ApiTransaction>>("api/transactions")
+            ?? new List<ApiTransaction>();
 
-    public Task<TransactionItem?> GetByIdAsync(int id) =>
-        _db.Table<TransactionItem>().Where(t => t.Id == id).FirstOrDefaultAsync();
+        return transactions
+            .Select(MapToAppModel)
+            .OrderByDescending(t => t.Date)
+            .ToList();
+    }
 
-    public Task<int> SaveAsync(TransactionItem item) =>
-        item.Id == 0 ? _db.InsertAsync(item) : _db.UpdateAsync(item);
+    public async Task<TransactionItem?> GetByIdAsync(int id)
+    {
+        try
+        {
+            var transaction = await _httpClient.GetFromJsonAsync<ApiTransaction>($"api/transactions/{id}");
+            return transaction is null ? null : MapToAppModel(transaction);
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+    }
 
-    public Task<int> DeleteAsync(TransactionItem item) =>
-        _db.DeleteAsync(item);
+    public async Task<int> SaveAsync(TransactionItem item)
+    {
+        if (item.Id == 0)
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/transactions", MapToApiModel(item));
+            response.EnsureSuccessStatusCode();
+            var created = await response.Content.ReadFromJsonAsync<ApiTransaction>();
+            item.Id = created?.Id ?? item.Id;
+            return created?.Id ?? 0;
+        }
 
-    public Task<List<TransactionItem>> GetForMonthAsync(int year, int month) =>
-        _db.Table<TransactionItem>()
-           .Where(t => t.Date.Year == year && t.Date.Month == month)
-           .ToListAsync();
+        var updateResponse = await _httpClient.PutAsJsonAsync($"api/transactions/{item.Id}", MapToApiModel(item));
+        updateResponse.EnsureSuccessStatusCode();
+        return item.Id;
+    }
+
+    public async Task<int> DeleteAsync(TransactionItem item)
+    {
+        var response = await _httpClient.DeleteAsync($"api/transactions/{item.Id}");
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            return 0;
+        }
+
+        response.EnsureSuccessStatusCode();
+        return 1;
+    }
+
+    public async Task<List<TransactionItem>> GetForMonthAsync(int year, int month)
+    {
+        var all = await GetAllAsync();
+        return all
+            .Where(t => t.Date.Year == year && t.Date.Month == month)
+            .ToList();
+    }
+
+    private static TransactionItem MapToAppModel(ApiTransaction transaction) =>
+        new()
+        {
+            Id = transaction.Id,
+            Date = transaction.Date,
+            Amount = transaction.Amount,
+            Type = transaction.Type,
+            Category = transaction.Category,
+            Note = string.IsNullOrWhiteSpace(transaction.Description) ? null : transaction.Description
+        };
+
+    private static ApiTransaction MapToApiModel(TransactionItem transaction) =>
+        new()
+        {
+            Id = transaction.Id,
+            Date = transaction.Date,
+            Amount = transaction.Amount,
+            Type = transaction.Type,
+            Category = transaction.Category,
+            Description = transaction.Note ?? string.Empty
+        };
+
+    private sealed class ApiTransaction
+    {
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
+        public decimal Amount { get; set; }
+
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public TransactionType Type { get; set; }
+
+        public string Category { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+    }
 }

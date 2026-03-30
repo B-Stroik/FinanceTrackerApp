@@ -5,6 +5,7 @@ using FinanceTrackerApp;
 using FinanceTrackerApp.ViewModels;
 using FinanceTrackerApp.Services;
 using FinanceTrackerApp.Views;
+using System.Net.Http.Headers;
 
 namespace FinanceTrackerApp;
 
@@ -22,7 +23,15 @@ public static class MauiProgram
 
         // DI
         builder.Services.AddSingleton(new AppDatabase(dbPath));
-        builder.Services.AddSingleton<TransactionRepository>();
+        builder.Services.AddSingleton<HttpClient>(_ =>
+        {
+            var client = new HttpClient
+            {
+                BaseAddress = new Uri(GetApiBaseUrl())
+            };
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            return client;
+        });
         builder.Services.AddSingleton<BudgetRepository>();
         builder.Services.AddSingleton<TimeBasedThemeService>();
 
@@ -37,5 +46,13 @@ public static class MauiProgram
         builder.Services.AddSingleton<ReportsPage>();
 
         return builder.Build();
+    }
+    private static string GetApiBaseUrl()
+    {
+#if ANDROID
+        return "http://10.0.2.2:5113/";
+#else
+        return "http://localhost:5113/";
+#endif
     }
 }
