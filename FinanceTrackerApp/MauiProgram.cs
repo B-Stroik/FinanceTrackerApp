@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.Maui;
-using FinanceTracker.Data;
-using FinanceTracker.Data.Repositories;
 using FinanceTrackerApp;
 using FinanceTrackerApp.ViewModels;
 using FinanceTrackerApp.Services;
 using FinanceTrackerApp.Views;
 using System.Net.Http.Headers;
+using FinanceTracker.Data.Repositories;
+using FinanceTracker.Data;
 
 namespace FinanceTrackerApp;
 
@@ -32,6 +32,7 @@ public static class MauiProgram
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return client;
         });
+        builder.Services.AddSingleton<ITransactionRepository, TransactionRepository>();
         builder.Services.AddSingleton<BudgetRepository>();
         builder.Services.AddSingleton<TimeBasedThemeService>();
 

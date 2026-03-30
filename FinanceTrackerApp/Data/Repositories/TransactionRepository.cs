@@ -1,11 +1,12 @@
 ﻿using FinanceTracker.Models;
+using FinanceTrackerApp.Models;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 
 namespace FinanceTracker.Data.Repositories;
 
-public class TransactionRepository
+public class TransactionRepository : ITransactionRepository
 {
     private readonly HttpClient _httpClient;
 
@@ -74,38 +75,24 @@ public class TransactionRepository
             .ToList();
     }
 
-    private static TransactionItem MapToAppModel(ApiTransaction transaction) =>
-        new()
-        {
-            Id = transaction.Id,
-            Date = transaction.Date,
-            Amount = transaction.Amount,
-            Type = transaction.Type,
-            Category = transaction.Category,
-            Note = string.IsNullOrWhiteSpace(transaction.Description) ? null : transaction.Description
-        };
-
-    private static ApiTransaction MapToApiModel(TransactionItem transaction) =>
-        new()
-        {
-            Id = transaction.Id,
-            Date = transaction.Date,
-            Amount = transaction.Amount,
-            Type = transaction.Type,
-            Category = transaction.Category,
-            Description = transaction.Note ?? string.Empty
-        };
-
-    private sealed class ApiTransaction
+    public TransactionItem MapToAppModel(ApiTransaction transaction) => new()
     {
-        public int Id { get; set; }
-        public DateTime Date { get; set; }
-        public decimal Amount { get; set; }
+        Id = transaction.Id,
+        Date = transaction.Date,
+        Amount = transaction.Amount,
+        Type = transaction.Type,
+        Category = transaction.Category,
+        Note = string.IsNullOrWhiteSpace(transaction.Description) ? null : transaction.Description
+    };
 
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public TransactionType Type { get; set; }
+    public ApiTransaction MapToApiModel(TransactionItem transaction) => new()
+    {
+        Id = transaction.Id,
+        Date = transaction.Date,
+        Amount = transaction.Amount,
+        Type = transaction.Type,
+        Category = transaction.Category,
+        Description = transaction.Note ?? string.Empty
+    };
 
-        public string Category { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-    }
 }
