@@ -25,9 +25,11 @@ public static class MauiProgram
         builder.Services.AddSingleton(new AppDatabase(dbPath));
         builder.Services.AddSingleton<HttpClient>(_ =>
         {
+            var apiBaseUrl = ApiGatewayResolver.Resolve();
+
             var client = new HttpClient
             {
-                BaseAddress = new Uri(GetApiBaseUrl())
+                BaseAddress = new Uri(apiBaseUrl)
             };
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return client;
@@ -48,13 +50,5 @@ public static class MauiProgram
         builder.Services.AddSingleton<ReportsPage>();
 
         return builder.Build();
-    }
-    private static string GetApiBaseUrl()
-    {
-#if ANDROID
-        return "http://10.0.2.2:5113/";
-#else
-        return "http://localhost:5113/";
-#endif
     }
 }

@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using FinanceTracker.Data.Repositories;
 using FinanceTracker.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Net.Http;
 
 namespace FinanceTrackerApp.ViewModels;
 
@@ -58,7 +58,18 @@ public partial class TransactionEditViewModel : ObservableObject
             Note = string.IsNullOrWhiteSpace(Note) ? null : Note.Trim()
         };
 
-        await _repo.SaveAsync(item);
-        await Shell.Current.GoToAsync("..");
+        try
+        {
+            await _repo.SaveAsync(item);
+            await Shell.Current.GoToAsync("..");
+        }
+        catch (HttpRequestException)
+        {
+            Error = "Unable to reach the API. Make sure the backend is running and reachable from the app.";
+        }
+        catch (Exception)
+        {
+            Error = "Something went wrong while saving the transaction.";
+        }
     }
 }
