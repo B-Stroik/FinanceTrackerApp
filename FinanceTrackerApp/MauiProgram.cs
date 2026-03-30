@@ -32,7 +32,8 @@ public static class MauiProgram
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return client;
         });
-        builder.Services.AddSingleton<ITransactionRepository, TransactionRepository>();
+        builder.Services.AddSingleton<TransactionRepository>();
+        builder.Services.AddSingleton<ITransactionRepository>(sp => sp.GetRequiredService<TransactionRepository>());
         builder.Services.AddSingleton<BudgetRepository>();
         builder.Services.AddSingleton<TimeBasedThemeService>();
 

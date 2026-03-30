@@ -17,8 +17,17 @@ public class TransactionRepository : ITransactionRepository
 
     public async Task<List<TransactionItem>> GetAllAsync()
     {
-        var transactions = await _httpClient.GetFromJsonAsync<List<ApiTransaction>>("api/transactions")
-            ?? new List<ApiTransaction>();
+        List<ApiTransaction> transactions;
+        try
+        {
+            transactions = await _httpClient.GetFromJsonAsync<List<ApiTransaction>>("api/transactions")
+                ?? new List<ApiTransaction>();
+        }
+        catch (HttpRequestException)
+        {
+            // If the API is unavailable (e.g., mobile app starts before backend), return an empty list so initial page loads do not crash.
+            return new List<TransactionItem>();
+        }
 
         return transactions
             .Select(MapToAppModel)
