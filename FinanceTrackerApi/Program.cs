@@ -25,13 +25,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseHttpsRedirection();
+}
 
 app.MapGet("/api/health", () => Results.Ok(new { status = "ok", timestamp = DateTime.UtcNow }))
     .WithName("Health")
     .WithTags("System")
     .Produces(StatusCodes.Status200OK);
 
-app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
