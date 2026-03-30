@@ -63,6 +63,10 @@ public partial class TransactionEditViewModel : ObservableObject
             await _repo.SaveAsync(item);
             await Shell.Current.GoToAsync("..");
         }
+        catch (InvalidOperationException ex)
+        {
+            Error = ex.Message;
+        }
         catch (HttpRequestException)
         {
             Error = "Unable to reach the API. Make sure the backend is running and reachable from the app.";

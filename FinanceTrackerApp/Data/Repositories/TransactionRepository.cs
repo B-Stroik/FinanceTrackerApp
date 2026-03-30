@@ -2,7 +2,6 @@
 using FinanceTrackerApp.Models;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json.Serialization;
 
 namespace FinanceTracker.Data.Repositories;
 
@@ -53,14 +52,14 @@ public class TransactionRepository : ITransactionRepository
         if (item.Id == 0)
         {
             var response = await _httpClient.PostAsJsonAsync("api/transactions", MapToApiModel(item));
-            response.EnsureSuccessStatusCode();
+            await EnsureSuccessWithDetailsAsync(response);
             var created = await response.Content.ReadFromJsonAsync<ApiTransaction>();
             item.Id = created?.Id ?? item.Id;
             return created?.Id ?? 0;
         }
 
         var updateResponse = await _httpClient.PutAsJsonAsync($"api/transactions/{item.Id}", MapToApiModel(item));
-        updateResponse.EnsureSuccessStatusCode();
+        await EnsureSuccessWithDetailsAsync(updateResponse);
         return item.Id;
     }
 
@@ -103,5 +102,19 @@ public class TransactionRepository : ITransactionRepository
         Category = transaction.Category,
         Description = transaction.Note ?? string.Empty
     };
+    private static async Task EnsureSuccessWithDetailsAsync(HttpResponseMessage response)
+    {
+        if (response.IsSuccessStatusCode)
+        {
+            return;
+        }
+
+        var details = await response.Content.ReadAsStringAsync();
+        var message = string.IsNullOrWhiteSpace(details)
+            ? $"Request failed with status code {(int)response.StatusCode}."
+            : details;
+
+        throw new InvalidOperationException(message);
+    }
 
 }
