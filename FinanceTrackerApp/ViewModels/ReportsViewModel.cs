@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FinanceTracker.Data.Repositories;
+using FinanceTracker.Models;
 using System.Collections.ObjectModel;
 
 namespace FinanceTrackerApp.ViewModels;
