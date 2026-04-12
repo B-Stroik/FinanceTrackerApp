@@ -1,0 +1,16 @@
+[
+  {
+    "Id": 1,
+    "Category": "Food",
+    "LimitAmount": 200,
+    "Month": 4,
+    "Year": 2026
+  },
+  {
+    "Id": 2,
+    "Category": "Games",
+    "LimitAmount": 50,
+    "Month": 4,
+    "Year": 2026
+  }
+]
