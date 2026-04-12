@@ -22,5 +22,29 @@
     "Type": 1,
     "Category": "Cash",
     "Description": "Shoveling"
+  },
+  {
+    "Id": 4,
+    "Date": "2026-04-12T00:00:00-05:00",
+    "Amount": 30,
+    "Type": 0,
+    "Category": "Games",
+    "Description": "MOUSE: P.I. for Hire"
+  },
+  {
+    "Id": 5,
+    "Date": "2026-04-12T00:00:00-05:00",
+    "Amount": 50,
+    "Type": 1,
+    "Category": "Savings",
+    "Description": "Pulled money from savings account"
+  },
+  {
+    "Id": 6,
+    "Date": "2026-04-12T00:00:00-05:00",
+    "Amount": 15,
+    "Type": 0,
+    "Category": "Food",
+    "Description": "Taco Bell"
   }
 ]

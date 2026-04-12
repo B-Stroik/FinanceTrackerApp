@@ -1,6 +1,17 @@
 @FinanceTrackerApi_HostAddress = http://localhost:5113
 
-GET {{FinanceTrackerApi_HostAddress}}/weatherforecast/
+### Health
+GET {{FinanceTrackerApi_HostAddress}}/api/health
 Accept: application/json
 
-###
+### Transactions
+GET {{FinanceTrackerApi_HostAddress}}/api/transactions
+Accept: application/json
+
+### Budgets
+GET {{FinanceTrackerApi_HostAddress}}/api/budgets
+Accept: application/json
+
+### Monthly report (current month)
+GET {{FinanceTrackerApi_HostAddress}}/api/reports/monthly
+Accept: application/json

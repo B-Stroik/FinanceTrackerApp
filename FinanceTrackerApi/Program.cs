@@ -1,7 +1,6 @@
 using FinanceTrackerApi.Models;
 using FinanceTrackerApi.Repositories;
 using FinanceTrackerApi.Services;
-using Microsoft.AspNetCore.Identity;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,11 +16,20 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IBudgetService, BudgetService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<ITransactionRepository>(sp =>
 {
     var options = sp.GetRequiredService<IConfiguration>().GetSection("Storage").Get<StorageOptions>() ?? new StorageOptions();
     return options.UseSqlServer
         ? new SqlTransactionRepository(sp.GetRequiredService<IConfiguration>()) : new JsonTransactionRepository(sp.GetRequiredService<IWebHostEnvironment>());
+});
+
+builder.Services.AddScoped<IBudgetRepository>(sp =>
+{
+    var options = sp.GetRequiredService<IConfiguration>().GetSection("Storage").Get<StorageOptions>() ?? new StorageOptions();
+    return options.UseSqlServer
+        ? new SqlBudgetRepository(sp.GetRequiredService<IConfiguration>()) : new JsonBudgetRepository(sp.GetRequiredService<IWebHostEnvironment>());
 });
 
 var app = builder.Build();

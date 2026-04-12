@@ -37,6 +37,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<TransactionRepository>();
         builder.Services.AddSingleton<ITransactionRepository>(sp => sp.GetRequiredService<TransactionRepository>());
         builder.Services.AddSingleton<BudgetRepository>();
+        builder.Services.AddSingleton<ReportRepository>();
         builder.Services.AddSingleton<TimeBasedThemeService>();
 
         builder.Services.AddSingleton<TransactionsViewModel>();
