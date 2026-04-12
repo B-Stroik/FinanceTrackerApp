@@ -1,83 +1,82 @@
-﻿using FinanceTrackerApi.Models;
+using FinanceTrackerApi.Models;
 using FinanceTrackerApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using Transaction = FinanceTrackerApi.Models.Transaction; //It didn't like the name conflict
 
 namespace FinanceTrackerApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TransactionsController : ControllerBase
+public class BudgetsController : ControllerBase
 {
-    private readonly ITransactionService _service;
-    private readonly ILogger<TransactionsController> _logger;
+    private readonly IBudgetService _service;
+    private readonly ILogger<BudgetsController> _logger;
 
-    public TransactionsController(ITransactionService service, ILogger<TransactionsController> logger)
+    public BudgetsController(IBudgetService service, ILogger<BudgetsController> logger)
     {
         _service = service;
         _logger = logger;
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<Transaction>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<Budget>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetAll()
     {
         try
         {
-            var transactions = await _service.GetAllAsync();
-            return Ok(transactions);
+            var budgets = await _service.GetAllAsync();
+            return Ok(budgets);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unexpected error while retrieving transactions");
+            _logger.LogError(ex, "Unexpected error while retrieving budgets");
             return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
         }
     }
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(Transaction), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Budget), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetById(int id)
     {
         try
         {
-            var transaction = await _service.GetByIdAsync(id);
-            if (transaction is null)
+            var budget = await _service.GetByIdAsync(id);
+            if (budget is null)
             {
-                _logger.LogWarning("Transaction with id {TransactionId} was not found", id);
+                _logger.LogWarning("Budget with id {BudgetId} was not found", id);
                 return NotFound();
             }
 
-            return Ok(transaction);
+            return Ok(budget);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unexpected error while retrieving transaction with id {TransactionId}", id);
+            _logger.LogError(ex, "Unexpected error while retrieving budget with id {BudgetId}", id);
             return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
         }
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Transaction), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(Budget), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Create([FromBody] Transaction transaction)
+    public async Task<IActionResult> Create([FromBody] Budget budget)
     {
         try
         {
-            var created = await _service.CreateAsync(transaction);
+            var created = await _service.CreateAsync(budget);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
         catch (ArgumentException ex)
         {
-            _logger.LogWarning(ex, "Invalid transaction payload while creating transaction");
+            _logger.LogWarning(ex, "Invalid budget payload while creating budget");
             return BadRequest(ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unexpected error while creating transaction");
+            _logger.LogError(ex, "Unexpected error while creating budget");
             return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
         }
     }
@@ -87,14 +86,14 @@ public class TransactionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Update(int id, [FromBody] Transaction transaction)
+    public async Task<IActionResult> Update(int id, [FromBody] Budget budget)
     {
         try
         {
-            var updated = await _service.UpdateAsync(id, transaction);
+            var updated = await _service.UpdateAsync(id, budget);
             if (!updated)
             {
-                _logger.LogWarning("Update failed because transaction with id {TransactionId} was not found", id);
+                _logger.LogWarning("Update failed because budget with id {BudgetId} was not found", id);
                 return NotFound();
             }
 
@@ -102,12 +101,12 @@ public class TransactionsController : ControllerBase
         }
         catch (ArgumentException ex)
         {
-            _logger.LogWarning(ex, "Invalid transaction payload while updating transaction {TransactionId}", id);
+            _logger.LogWarning(ex, "Invalid budget payload while updating budget {BudgetId}", id);
             return BadRequest(ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unexpected error while updating transaction with id {TransactionId}", id);
+            _logger.LogError(ex, "Unexpected error while updating budget with id {BudgetId}", id);
             return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
         }
     }
@@ -123,7 +122,7 @@ public class TransactionsController : ControllerBase
             var deleted = await _service.DeleteAsync(id);
             if (!deleted)
             {
-                _logger.LogWarning("Delete failed because transaction with id {TransactionId} was not found", id);
+                _logger.LogWarning("Delete failed because budget with id {BudgetId} was not found", id);
                 return NotFound();
             }
 
@@ -131,7 +130,7 @@ public class TransactionsController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unexpected error while deleting transaction with id {TransactionId}", id);
+            _logger.LogError(ex, "Unexpected error while deleting budget with id {BudgetId}", id);
             return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
         }
     }
