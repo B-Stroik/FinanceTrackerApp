@@ -6,11 +6,12 @@ using System.Net.Http.Json;
 
 namespace FinanceTrackerApp.ViewModels;
 
-public partial class LoginViewModel : BaseViewModel
+public partial class LoginViewModel : ObservableObject
 {
     private readonly HttpClient _httpClient;
     private readonly ITokenStore _tokenStore;
 
+    [ObservableProperty] private bool isBusy;
     [ObservableProperty] private string email = "user@financetracker.local";
     [ObservableProperty] private string password = "User123$";
     [ObservableProperty] private string statusMessage = "Not logged in.";
