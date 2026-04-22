@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:FinanceTrackerApp.ViewModels"
+             x:Class="FinanceTrackerApp.Views.LoginPage"
+             x:DataType="viewModels:LoginViewModel"
+             Title="Login">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="12">
+            <Label Text="API Login" FontSize="24" />
+            <Entry Placeholder="Email" Text="{Binding Email}" Keyboard="Email" />
+            <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="True" />
+
+            <Button Text="Login" Command="{Binding LoginCommand}" />
+            <Button Text="Logout" Command="{Binding LogoutCommand}" />
+
+            <Label Text="{Binding StatusMessage}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
