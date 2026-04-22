@@ -11,46 +11,18 @@ public partial class LoginViewModel : ObservableObject
     private readonly HttpClient _httpClient;
     private readonly ITokenStore _tokenStore;
 
-    private bool _isBusy;
-    private string _email = "user@financetracker.local";
-    private string _password = "User123$";
-    private string _statusMessage = "Not logged in.";
-
-    public bool IsBusy
-    {
-        get => _isBusy;
-        set => SetProperty(ref _isBusy, value);
-    }
-
-    public string Email
-    {
-        get => _email;
-        set => SetProperty(ref _email, value);
-    }
-
-    public string Password
-    {
-        get => _password;
-        set => SetProperty(ref _password, value);
-    }
-
-    public string StatusMessage
-    {
-        get => _statusMessage;
-        set => SetProperty(ref _statusMessage, value);
-    }
-
-    public IAsyncRelayCommand LoginCommand { get; }
-    public IAsyncRelayCommand LogoutCommand { get; }
+    [ObservableProperty] private bool isBusy;
+    [ObservableProperty] private string email = "user@financetracker.local";
+    [ObservableProperty] private string password = "User123$";
+    [ObservableProperty] private string statusMessage = "Not logged in.";
 
     public LoginViewModel(HttpClient httpClient, ITokenStore tokenStore)
     {
         _httpClient = httpClient;
         _tokenStore = tokenStore;
-        LoginCommand = new AsyncRelayCommand(LoginAsync);
-        LogoutCommand = new AsyncRelayCommand(LogoutAsync);
     }
 
+    [RelayCommand]
     private async Task LoginAsync()
     {
         IsBusy = true;
@@ -82,6 +54,7 @@ public partial class LoginViewModel : ObservableObject
         }
     }
 
+    [RelayCommand]
     private async Task LogoutAsync()
     {
         await _tokenStore.ClearAsync();
