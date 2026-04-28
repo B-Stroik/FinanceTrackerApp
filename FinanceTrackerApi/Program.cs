@@ -56,13 +56,6 @@ if (authEnabled)
         .AddIdentityApiEndpoints<IdentityUser>()
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AuthFinanceTrackerDbContext>();
-
-    builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = IdentityConstants.BearerScheme;
-            options.DefaultChallengeScheme = IdentityConstants.BearerScheme;
-        })
-        .AddBearerToken(IdentityConstants.BearerScheme);
 }
 else
 {
