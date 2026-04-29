@@ -1,5 +1,6 @@
 using FinanceTrackerApi.Models;
 using FinanceTrackerApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceTrackerApi.Controllers;
@@ -18,6 +19,7 @@ public class ReportsController : ControllerBase
     }
 
     [HttpGet("monthly")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(ReportSummary), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]

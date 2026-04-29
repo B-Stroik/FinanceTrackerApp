@@ -7,10 +7,10 @@ public class SqlBudgetRepository : IBudgetRepository
 {
     private readonly string _connectionString;
 
-    public SqlBudgetRepository(IConfiguration configuration)
+    public SqlBudgetRepository(IConfiguration configuration, string connectionStringName = "NoAuthConnection")
     {
-        _connectionString = configuration.GetConnectionString("SqlServer")
-            ?? throw new InvalidOperationException("Missing SQL Server connection string.");
+        _connectionString = configuration.GetConnectionString(connectionStringName)
+            ?? throw new InvalidOperationException($"Missing SQL Server connection string: {connectionStringName}.");
     }
 
     public async Task<IReadOnlyList<Budget>> GetAllAsync()

@@ -16,6 +16,10 @@
         <Tab Title="Reports">
             <ShellContent ContentTemplate="{DataTemplate views:ReportsPage}" />
         </Tab>
+
+        <Tab Title="Login">
+            <ShellContent ContentTemplate="{DataTemplate views:LoginPage}" />
+        </Tab>
     </TabBar>
 
 </Shell>

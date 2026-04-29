@@ -7,10 +7,10 @@ public class SqlTransactionRepository : ITransactionRepository
 {
     private readonly string _connectionString;
 
-    public SqlTransactionRepository(IConfiguration configuration)
+    public SqlTransactionRepository(IConfiguration configuration, string connectionStringName = "NoAuthConnection")
     {
-        _connectionString = configuration.GetConnectionString("SqlServer")
-            ?? throw new InvalidOperationException("Missing SQL Server connection string.");
+        _connectionString = configuration.GetConnectionString(connectionStringName)
+            ?? throw new InvalidOperationException($"Missing SQL Server connection string: {connectionStringName}.");
     }
 
     public async Task<IReadOnlyList<Transaction>> GetAllAsync()

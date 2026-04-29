@@ -4,6 +4,7 @@ using FinanceTrackerApp.ViewModels;
 using FinanceTrackerApp.Services;
 using FinanceTrackerApp.Views;
 using System.Net.Http.Headers;
+using System.Net.Http;
 using FinanceTracker.Data.Repositories;
 using FinanceTracker.Data;
 
@@ -23,11 +24,15 @@ public static class MauiProgram
 
         // DI
         builder.Services.AddSingleton(new AppDatabase(dbPath));
-        builder.Services.AddSingleton<HttpClient>(_ =>
+        builder.Services.AddSingleton<ITokenStore, TokenStore>();
+        builder.Services.AddTransient<AuthTokenHandler>();
+        builder.Services.AddSingleton<HttpClient>(sp =>
         {
             var apiBaseUrl = ApiGatewayResolver.Resolve();
+            var authHandler = sp.GetRequiredService<AuthTokenHandler>();
+            authHandler.InnerHandler = new HttpClientHandler();
 
-            var client = new HttpClient
+            var client = new HttpClient(authHandler)
             {
                 BaseAddress = new Uri(apiBaseUrl)
             };
@@ -41,11 +46,13 @@ public static class MauiProgram
         builder.Services.AddSingleton<TimeBasedThemeService>();
 
         builder.Services.AddSingleton<TransactionsViewModel>();
+        builder.Services.AddTransient<LoginViewModel>();
         builder.Services.AddTransient<TransactionEditViewModel>();
         builder.Services.AddSingleton<BudgetsViewModel>();
         builder.Services.AddSingleton<ReportsViewModel>();
 
         builder.Services.AddSingleton<TransactionsPage>();
+        builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<TransactionEditPage>();
         builder.Services.AddSingleton<BudgetsPage>();
         builder.Services.AddSingleton<ReportsPage>();
